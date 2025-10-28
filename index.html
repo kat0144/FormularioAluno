@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Alunos</title>
+
+
+</head>
+
+<body>
+    <h1>Cadastro de alunos com formulário </h1>
+    <form action="" method="post">
+        <fieldset>
+            <legend>Informações pessoais</legend>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <br>
+            <br>
+
+
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" name="idade" required>
+            <br>
+            <br>
+
+            <label for="curso">Curso:</label>
+            <select name="curso" id="curso" required>
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="Java">Java</option>
+            </select>
+            <br>
+            <br>
+
+            <label for="notafinal">Nota Final:</label>
+            <input type="number" id="notaFinal" name="notaFinal" required>
+            <br>
+            <br>
+
+            <input id ="btnCadastrar" type="button" value="Cadastrar">
+            <input id="btnExcluir" type="submit" value="Excluir" onclick="excluirAluno()">
+            <input id="btnEditar" type="submit" value="Editar" onclick="editarAluno()">
+        </fieldset>
+    </form>
+
+    <h2>Lista de alunos</h2>
+    <table border=".1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th hcgcolor="gray" width="130">ID</th>
+                <th hcgcolor="gray" width="130">Nome</th>
+                <th hcgcolor="gray" width="130">Idade</th>
+                <th hcgcolor="gray" width="130">Curso</th>
+                <th hcgcolor="gray" width="130">Nota final</th>
+                <th hcgcolor="gray" width="130">Botões</th>
+            </tr>
+        </thead>
+
+        <tbody id="tabela">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>
