@@ -8,7 +8,7 @@ class Aluno {
 
     isAprovado() {
         if (this.notaFinal >= 7) {
-            return true; 
+            return true;
         }
 
         else {
@@ -43,6 +43,7 @@ class AlunoController {
         document.getElementById('btnCadastrar').addEventListener('click', (e) => this.cadastrarAluno(e));
         document.getElementById('btnExcluir').addEventListener('click', (e) => this.excluirAluno(e));
         document.getElementById('btnEditar').addEventListener('click', (e) => this.editarAluno(e));
+        document.getElementById('btnGerarRelatorio').addEventListener('click', (e) => this.gerarRelatorio(e));
     }
 
 
@@ -76,7 +77,7 @@ class AlunoController {
                 this.atualizarTabela(); // atualiza a tabela com nova lista de alunos
                 this.limparFormulario(); // limpa os campos de formulário
 
-                console.log(aluno.toString()); 
+                console.log(aluno.toString());
             }
 
             else {
@@ -147,14 +148,14 @@ class AlunoController {
             row.insertCell(2).innerText = aluno.idade;
             row.insertCell(3).innerText = aluno.curso;
             row.insertCell(4).innerText = aluno.notaFinal;
-            const status =  row.insertCell(5);
-            
-            if(aluno.isAprovado()) {
+            const status = row.insertCell(5);
+
+            if (aluno.isAprovado()) {
                 status.innerText = "APROVADO!";
             }
 
             else {
-                status.innerText = "REPROVADO"; 
+                status.innerText = "REPROVADO";
             }
 
             const btnEditar = document.createElement('button');
@@ -190,7 +191,98 @@ class AlunoController {
 
 
     }
+    listarAprovados() {
+        return this.alunos.filter(aluno => aluno.isAprovado()); // filtra e lista os alunos aprovados 
+
+    }
+
+    exibeMediaNotas() {
+
+        if (this.alunos.length == 0) {
+            return 0;
+        }
+        else {
+            const somaNotas = this.alunos.reduce((acc, aluno) => acc + aluno.notaFinal, 0);
+            return (somaNotas / this.alunos.length).toFixed(2);
+        }
+    }
+
+    exibeMediaIdades() {
+        if (this.alunos.length == 0) {
+            return 0;
+        }
+        else {
+            const somaIdade = this.alunos.reduce((acc, aluno) => acc + aluno.idade, 0);
+            return (somaIdade / this.alunos.length).toFixed(1);
+        }
+
+    }
+
+    nomesOrdenados() {
+        const nomes = this.alunos.map(aluno => aluno.nome);
+        return nomes.sort();
+    }
+
+    contarPorCurso() {
+
+        return this.alunos.reduce((contagem, aluno) => {
+            const nomeCurso = aluno.curso;
+            contagem[nomeCurso] = (contagem[nomeCurso] || 0) + 1;
+
+            return contagem;
+        }, {});
+    }
+
+gerarRelatorio() {
+    const mediaNotas = this.exibeMediaNotas();
+    document.getElementById('mediaNotas').textContent = `Média: ${mediaNotas}`;
+
+
+    const mediaIdade = this.exibeMediaIdades();
+    document.getElementById('mediaIdades').textContent = `Média: ${mediaIdade} anos`;
+
+    const listaNomes = document.getElementById('nomesOrdenados');
+    listaNomes.innerHTML = ''; 
+
+    const nomesOrdenados = this.nomesOrdenados();
+    nomesOrdenados.forEach(nome => {
+        const item = document.createElement('li');
+        item.textContent = nome;
+        listaNomes.appendChild(item);
+    });
+
+    const listaContagem = document.getElementById('contagemCurso');
+    listaContagem.innerHTML = ''; // Limpa a lista
+    
+    const contagemCursos = this.contarPorCurso();
+    for (const curso in contagemCursos) {
+        if (contagemCursos.hasOwnProperty(curso)) {
+            const item = document.createElement('li');
+            item.textContent = `${curso}: ${contagemCursos[curso]} aluno(s)`;
+            listaContagem.appendChild(item);
+        }
+    }
+
+    const listaAprovados = document.getElementById('Aprovados');
+    listaAprovados.innerHTML = ''
+    
+    const aprovados = this.listarAprovados();
+    
+    if (aprovados.length === 0) {
+        listaAprovados.textContent = 'Nenhum aluno aprovado até o momento.';
+    } else {
+        aprovados.forEach(aluno => {
+            const item = document.createElement('li');
+            item.textContent = `${aluno.nome} - Nota: ${aluno.notaFinal.toFixed(1).replace('.', ',')}`;
+            listaAprovados.appendChild(item);
+        });
+    }
+
+    console.log("Relatórios atualizados com sucesso!");
+
 }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     new AlunoController();
